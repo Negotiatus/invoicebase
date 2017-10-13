@@ -1,0 +1,7 @@
+<%= form_tag csv_import_index_path, method: :post, multipart: true do %>
+  Import a new Invoice CSV
+  <%= label_tag "Select a vendor" %>
+  <%= select_tag :vendor, options_for_select(["WB Mason"], "WB Mason") %>
+  <%= file_field_tag :file, accept: 'text/csv' %>
+  <%= submit_tag "Upload CSV" %>
+<% end %>

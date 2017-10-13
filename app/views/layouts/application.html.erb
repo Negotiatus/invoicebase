@@ -17,7 +17,7 @@
       <% flash.each do |key, value| %>
         <div class="flash-container <%= flash_class(key) %>">
           <button class="delete is-flash-delete-button"></button>
-          <%= value %>
+          <%= value.html_safe %>
         </div>
       <% end %>
       <% flash.clear %>
