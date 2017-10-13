@@ -1,0 +1,108 @@
+<% provide(:page_title, 'Invoice Reconciliation') %>
+
+<section class="section">
+  <form action="" method="get">
+    <div class="columns">
+      <div class="column">
+        <div class="field">
+          <div class="control">
+            <%= label_tag :filter_start_date, nil, class: 'label' %>
+            <%= date_field_tag :filter_start_date, params.fetch(:filter_start_date, nil), class: 'input' %>
+          </div>
+        </div>
+      </div>
+
+      <div class="column">
+        <div class="field">
+          <div class="control">
+            <%= label_tag :filter_end_date, nil, class: 'label' %>
+            <%= date_field_tag :filter_end_date, params.fetch(:filter_end_date, nil), class: 'input' %>
+          </div>
+        </div>
+      </div>
+
+      <div class="column">
+        <div class="field">
+          <%= label_tag :filter_match_status, nil, class: 'label' %>
+          <div class="control">
+            <div class="select is-fullwidth">
+              <%= select_tag 'filter_match_status', options_for_select(['', 'unmatched', 'matched'], params.fetch(:filter_match_status, '')), class: 'is-capitalized' %>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="column">
+        <div class="field">
+          <%= label_tag :filter_payment_status, nil, class: 'label' %>
+          <div class="control">
+            <div class="select is-fullwidth">
+              <%= select_tag 'filter_payment_status', options_for_select(['', 'unpaid', 'paid'], params.fetch(:filter_payment_status, '')), class: 'is-capitalized' %>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="column">
+        <div class="field">
+          <%= label_tag :filter_payable_status, nil, class: 'label' %>
+          <div class="control">
+            <div class="select is-fullwidth">
+              <%= select_tag 'filter_payable_status', options_for_select(['', 'unpayable', 'payable'], params.fetch(:filter_payable_status, '')), class: 'is-capitalized' %>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="column is-shrunk">
+        <label class="label">&nbsp;</label>
+        <input type="submit" value="Filter" class="button is-primary">
+      </div>
+
+      <div class="column is-shrunk">
+        <label class="label">&nbsp;</label>
+        <%= link_to 'Clear', records_path, class: 'button is-light' %>
+      </div>
+    </form>
+  </div>
+
+  <hr>
+
+  <table class="table is-fullwidth">
+    <thead>
+      <tr>
+        <th>External Reference Number</th>
+        <th></th>
+        <th>Internal Reference Number</th>
+        <th>Payable?</th>
+        <th>Paid?</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @external_records.each do |record| %>
+        <tr>
+          <td><%= record.reference_number %></td>
+          <td>&raquo;</td>
+          <td><%= record.internal_record.reference_number %></td>
+          <td><input type="checkbox"> Payable?</td>
+          <td><input type="checkbox"> Paid?</td>
+        </tr>
+      <% end %>
+
+      <% if @external_records.blank? %>
+        <tr>
+          <td colspan="5"><p class="has-text-centered">No records found for filter</p></td>
+        </tr>
+      <% end %>
+    </tbody>
+
+    <tfoot>
+      <tr>
+        <th colspan="5" class="has-text-right">
+          <input type="submit" value="Save records" class="button is-primary">
+        </th>
+      </tr>
+    </tfoot>
+  </table>
+</section>
