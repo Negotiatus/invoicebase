@@ -12,16 +12,16 @@ RUN bash node_setup \
         nodejs \
         libpq-dev
 
-WORKDIR /microservice
+WORKDIR /invoicebase
 
 ARG INSTALL_GROUPS
 
-COPY Gemfile Gemfile.lock /microservice/
+COPY Gemfile Gemfile.lock /invoicebase/
 
 RUN echo "Installing groups:" $INSTALL_GROUPS
 
 RUN bundle install --with $INSTALL_GROUPS
 
-COPY . /microservice
+COPY . /invoicebase
 
 CMD ["bundle", "exec", "rails", "server"]

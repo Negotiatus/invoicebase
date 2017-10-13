@@ -2,7 +2,7 @@
 
 A platform to store all of your **leads** in a single **database** and run validations on them.
 
-Microservice utilizes the [Bulma](http://bulma.io/) CSS framework, and thus uses a CSS classification scheme that follows Bulma's configuration:
+Invoicebase utilizes the [Bulma](http://bulma.io/) CSS framework, and thus uses a CSS classification scheme that follows Bulma's configuration:
 
 - `<trait>` classes describe basic components (eg: `<div class="table">`)
 - `is-<trait>` classes apply styles directly on the elements they are applied to (eg: `<span class="is-bold">`) or describe a  component modified for a specific context (eg: `<div class="table is-striped is-leads-table">`)
@@ -12,11 +12,11 @@ Refer to the [Bulma documentation](http://bulma.io/documentation/overview/start/
 
 ## Setup
 
-Microservice uses Docker to normalize its environment. You can start the server on your own computer using:
+Invoicebase uses Docker to normalize its environment. You can start the server on your own computer using:
 
 ```
-git clone https://github.com/Negotiatus/microservice.git
-cd microservice
+git clone https://github.com/Negotiatus/invoicebase.git
+cd invoicebase
 docker-compose build
 docker-compose up
 ```

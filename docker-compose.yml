@@ -1,6 +1,6 @@
 version: "2.1"
 services:
-  microservice:
+  invoicebase:
     extends:
       file: docker-compose.base.yml
       service: base
@@ -8,9 +8,9 @@ services:
       args:
         INSTALL_GROUPS: development
     networks:
-      - microservice
+      - invoicebase
     volumes:
-      - microservice_files:/microservice:nocopy
+      - invoicebase_files:/invoicebase:nocopy
     ports:
       - "3001:3000"
     links:
@@ -22,8 +22,8 @@ services:
       service: database
 
 networks:
-  microservice:
+  invoicebase:
 volumes:
   db-data:
-  microservice_files:
+  invoicebase_files:
     external: true

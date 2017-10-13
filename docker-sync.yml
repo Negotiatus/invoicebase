@@ -2,7 +2,7 @@ version: "2"
 options:
   verbose: true
 syncs:
-  microservice_files:
+  invoicebase_files:
     src: "./"
     notify_terminal: true
     sync_host_ip: "127.0.0.1"

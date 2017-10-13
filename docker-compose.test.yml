@@ -10,7 +10,7 @@ services:
         INSTALL_GROUPS: test
     image: tests:build_${BUILDKITE_BRANCH:-latest}
     volumes:
-      - microservice_files:/microservice:nocopy
+      - invoicebase_files:/invoicebase:nocopy
     environment:
       - RAILS_ENV=test
       - BUILDKITE_BUILD_NUMBER
@@ -29,8 +29,8 @@ services:
       service: database
 
 networks:
-  microservice:
+  invoicebase:
 volumes:
   db-data:
-  microservice_files:
+  invoicebase_files:
     external: true

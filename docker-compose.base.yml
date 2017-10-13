@@ -1,13 +1,13 @@
 version: "2.1"
 services:
   base:
-    image: microservice:latest
+    image: invoicebase:latest
     build:
       context: .
       args:
         - INSTALL_GROUPS
     networks:
-      - microservice
+      - invoicebase
     restart: "on-failure"
     tty: true
     stdin_open: true
@@ -18,4 +18,4 @@ services:
       - db-data:/var/lib/postgresql/data
     restart: "always"
     networks:
-      - microservice
+      - invoicebase
