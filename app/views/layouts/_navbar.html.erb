@@ -1,28 +1,26 @@
 <nav class="navbar ">
   <div class="navbar-brand">
-    <%= link_to leads_path, class: "navbar-item" do %>
-      <%= image_tag "logo_color.svg" %>
+    <%= link_to "/", class: "navbar-item" do %>
+      home
     <% end %>
   </div>
 
   <div class="navbar-menu">
     <div class="navbar-start">
-      <%= link_to "Leads", leads_path, class: "navbar-item" %>
-      <%= link_to "Validations", validations_path, class: "navbar-item" %>
+      <%= link_to "Nothing", nil , class: "navbar-item" %>
       <div class="navbar-item has-dropdown is-hoverable">
-        <a href="#" class="navbar-link">CSV</a>
+        <a href="#" class="navbar-link">More nothing</a>
         <div class="navbar-dropdown">
-          <%= link_to "Imports", csv_imports_path, class: "navbar-item" %>
-          <%= link_to "Exports", csv_exports_path, class: "navbar-item" %>
+          <%= link_to "Nothing else", nil, class: "navbar-item" %>
         </div>
       </div>
     </div>
 
     <div class="navbar-end">
       <span class="navbar-item">
-        <img src="<%= current_user.image %>" />
+        <img src="<%= current_user&.image %>" />
         &nbsp;
-        Hi <%= current_user.first_name %>
+        Hi <%= current_user&.first_name %>
         &nbsp;
         <%= link_to "(logout)", destroy_user_session_path %>
       </span>
