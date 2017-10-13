@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171013204122) do
+ActiveRecord::Schema.define(version: 20171013204125) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -37,6 +37,7 @@ ActiveRecord::Schema.define(version: 20171013204122) do
     t.bigint "internal_record_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.float "confidence", default: 0.0
     t.index ["external_record_id"], name: "index_guesses_on_external_record_id"
     t.index ["internal_record_id"], name: "index_guesses_on_internal_record_id"
   end
