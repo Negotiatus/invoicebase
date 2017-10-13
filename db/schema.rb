@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171013203517) do
+ActiveRecord::Schema.define(version: 20171013204122) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -30,6 +30,15 @@ ActiveRecord::Schema.define(version: 20171013203517) do
     t.datetime "updated_at", null: false
     t.index ["date"], name: "index_external_records_on_date"
     t.index ["paid_at", "payable"], name: "index_external_records_on_paid_at_and_payable"
+  end
+
+  create_table "guesses", force: :cascade do |t|
+    t.bigint "external_record_id"
+    t.bigint "internal_record_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["external_record_id"], name: "index_guesses_on_external_record_id"
+    t.index ["internal_record_id"], name: "index_guesses_on_internal_record_id"
   end
 
   create_table "internal_records", force: :cascade do |t|
