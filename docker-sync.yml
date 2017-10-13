@@ -1,0 +1,13 @@
+version: "2"
+options:
+  verbose: true
+syncs:
+  microservice_files:
+    src: "./"
+    notify_terminal: true
+    sync_host_ip: "127.0.0.1"
+    sync_host_port: 9876
+    sync_prefer: "default"
+    sync_excludes: ["log", "tmp", ".git", ".gitignore", "coverage"]
+    sync_excludes_type: "Path"
+    watch_excludes: ["tmp"]

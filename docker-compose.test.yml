@@ -1,0 +1,36 @@
+version: "2.1"
+services:
+  test:
+    extends:
+      file: docker-compose.base.yml
+      service: base
+    build:
+      context: .
+      args:
+        INSTALL_GROUPS: test
+    image: tests:build_${BUILDKITE_BRANCH:-latest}
+    volumes:
+      - microservice_files:/microservice:nocopy
+    environment:
+      - RAILS_ENV=test
+      - BUILDKITE_BUILD_NUMBER
+      - CPUS_PER_SUITE
+    links:
+      - database:db
+    entrypoint:
+      - "./docker-test-entrypoint.sh"
+    command:
+      - "spec/"
+    restart: "no"
+
+  database:
+    extends:
+      file: docker-compose.base.yml
+      service: database
+
+networks:
+  microservice:
+volumes:
+  db-data:
+  microservice_files:
+    external: true

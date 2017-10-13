@@ -9,6 +9,19 @@
 /test/tmp/
 /test/version_tmp/
 /tmp/
+*.log
+/log/
+/public/system
+.DS_Store
+
+# Ignore test coverage
+coverage
+/spec/support/last_run.txt
+rspec.xml
+
+.bundle/
+.docker-sync/
+/config/application.yml
 
 # Used by dotenv library to load environment variables.
 # .env

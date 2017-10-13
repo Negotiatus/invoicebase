@@ -1,0 +1,47 @@
+<nav class="navbar ">
+  <div class="navbar-brand">
+    <%= link_to leads_path, class: "navbar-item" do %>
+      <%= image_tag "logo_color.svg" %>
+    <% end %>
+  </div>
+
+  <div class="navbar-menu">
+    <div class="navbar-start">
+      <%= link_to "Leads", leads_path, class: "navbar-item" %>
+      <%= link_to "Validations", validations_path, class: "navbar-item" %>
+      <div class="navbar-item has-dropdown is-hoverable">
+        <a href="#" class="navbar-link">CSV</a>
+        <div class="navbar-dropdown">
+          <%= link_to "Imports", csv_imports_path, class: "navbar-item" %>
+          <%= link_to "Exports", csv_exports_path, class: "navbar-item" %>
+        </div>
+      </div>
+    </div>
+
+    <div class="navbar-end">
+      <span class="navbar-item">
+        <img src="<%= current_user.image %>" />
+        &nbsp;
+        Hi <%= current_user.first_name %>
+        &nbsp;
+        <%= link_to "(logout)", destroy_user_session_path %>
+      </span>
+    </div>
+  </div>
+</nav>
+
+<% page_color = content_for?(:page_color) ? yield(:page_color) : 'is-primary' %>
+<section class="hero <%= page_color %>">
+  <div class="hero-body">
+    <div class="container">
+      <h1 class="title">
+        <%= yield :page_title %>
+      </h1>
+      <% if content_for :page_subtitle %>
+        <h2 class="subtitle">
+          <%= yield :page_subtitle %>
+        </h2>
+      <% end %>
+    </div>
+  </div>
+</section>

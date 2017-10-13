@@ -1,0 +1,14 @@
+--require rails_helper
+--format progress
+--color
+--tag ~type:feature
+--tag ~live_web
+--format RspecJunitFormatter
+<% if !ENV['BUILDKITE_BUILD_NUMBER'].nil? %>
+--out tmp/rspec_<%= ENV['BUILDKITE_BUILD_NUMBER'] %>.xml
+--format ParallelTests::RSpec::RuntimeLogger
+--out tmp/parallel_runtime_rspec.log
+<% else %>
+--out rspec.xml
+<% end %>
+--failure-exit-code 189

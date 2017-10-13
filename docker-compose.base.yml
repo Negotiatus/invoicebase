@@ -1,0 +1,21 @@
+version: "2.1"
+services:
+  base:
+    image: microservice:latest
+    build:
+      context: .
+      args:
+        - INSTALL_GROUPS
+    networks:
+      - microservice
+    restart: "on-failure"
+    tty: true
+    stdin_open: true
+
+  database:
+    image: postgres:9
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    restart: "always"
+    networks:
+      - microservice

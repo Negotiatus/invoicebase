@@ -1,0 +1,49 @@
+<section class="hero is-primary is-fullheight is-bold">
+  <div class="hero-head">
+    <header class="nav">
+      <div class="container">
+        <div class="nav-left">
+          <a class="nav-item">
+            Microservice
+          </a>
+        </div>
+        <div class="nav-right nav-menu">
+          <span class="nav-item is-active">
+            a product of&nbsp;<a href="http://www.negotiatus.com">negotiatus.com</a>
+          </span>
+          <span class="nav-item">
+            <% if current_user %>
+              <span class="nav-item">
+                Hello <%= current_user.first_name %>
+              </span>
+              <%= link_to destroy_user_session_path, class: "button is-primary is-inverted" do %>
+                <span class="icon">
+                  <i class="fa fa-google"></i>
+                </span>
+                <span>logout</span>
+              <% end %>
+            <% else %>
+              <%= link_to user_google_oauth2_omniauth_authorize_path, class: "button is-primary is-inverted" do %>
+                <span class="icon">
+                  <i class="fa fa-google"></i>
+                </span>
+                <span>login</span>
+              <% end %>
+            <% end %>
+          </span>
+        </div>
+      </div>
+    </header>
+  </div>
+
+  <div class="hero-body">
+    <div class="container has-text-centered">
+      <h1 class="title">
+        "Awesome Microservice"
+      </h1>
+      <h2 class="subtitle">
+        - Jeff Bezos
+      </h2>
+    </div>
+  </div>
+</div>

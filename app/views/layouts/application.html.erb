@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Leadbase</title>
+    <%= csrf_meta_tags %>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.5.0/css/bulma.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.4/lodash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+  </head>
+
+  <body>
+    <% if flash.present? %>
+      <% flash.each do |key, value| %>
+        <div class="flash-container <%= flash_class(key) %>">
+          <button class="delete is-flash-delete-button"></button>
+          <%= value %>
+        </div>
+      <% end %>
+      <% flash.clear %>
+    <% end %>
+    <% if params[:controller] != "static" %>
+      <%= render partial: "layouts/navbar" %>
+      <div class="container">
+        <%= yield %>
+      </div>
+      <%= render partial: "layouts/footer" %>
+    <% else %>
+      <%= yield %>
+    <% end %>
+  </body>
+</html>

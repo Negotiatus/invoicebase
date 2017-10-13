@@ -1,0 +1,29 @@
+version: "2.1"
+services:
+  microservice:
+    extends:
+      file: docker-compose.base.yml
+      service: base
+    build:
+      args:
+        INSTALL_GROUPS: development
+    networks:
+      - microservice
+    volumes:
+      - microservice_files:/microservice:nocopy
+    ports:
+      - "3001:3000"
+    links:
+      - database:db
+
+  database:
+    extends:
+      file: docker-compose.base.yml
+      service: database
+
+networks:
+  microservice:
+volumes:
+  db-data:
+  microservice_files:
+    external: true
