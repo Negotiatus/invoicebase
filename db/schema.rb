@@ -10,10 +10,38 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170722153325) do
+ActiveRecord::Schema.define(version: 20171013203517) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "external_records", force: :cascade do |t|
+    t.string "invoice_number"
+    t.string "reference_number"
+    t.string "negotiatus_reference_number"
+    t.date "date"
+    t.integer "amount_cents"
+    t.string "delivery_address_string"
+    t.string "delivery_address_zipcode"
+    t.integer "reconciliation_id"
+    t.datetime "paid_at"
+    t.boolean "payable"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["date"], name: "index_external_records_on_date"
+    t.index ["paid_at", "payable"], name: "index_external_records_on_paid_at_and_payable"
+  end
+
+  create_table "internal_records", force: :cascade do |t|
+    t.string "reference_number"
+    t.string "negotiatus_reference_number"
+    t.date "date"
+    t.integer "amount_cents"
+    t.string "delivery_address_string"
+    t.string "delivery_address_zipcode"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "first_name", null: false
