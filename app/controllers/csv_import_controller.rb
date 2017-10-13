@@ -3,7 +3,7 @@ class CsvImportController < ApplicationController
   end
 
   def create
-    errors = Vendors::WBMasonCsvImporter.import(csv: csv_import_params[:file].tempfile)
+    errors = CsvImportService.import(vendor: csv_import_params[:vendor], csv: csv_import_params[:file].tempfile)
 
     if !errors
       flash[:success] = "Success"

@@ -1,5 +1,6 @@
 class CsvImportService
-  def self.import(csv:)
-    binding.pry
+  def self.import(vendor:, csv:)
+    # if vendor == "WB Mason"
+    Vendors::WBMasonCsvImporter.import(csv: csv)
   end
 end
