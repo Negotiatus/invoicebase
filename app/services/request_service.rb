@@ -1,0 +1,14 @@
+class RequestService
+  def self.get_request(vendor_name:, start_date:, end_date:)
+    response = HTTParty.get(
+      "#{ENV['NEGOTIATUS_API_URL']}/invoicebase_domains",
+      headers: {
+        Authorization: "Secret #{ENV['PARTNER_SECRET']}"
+      }
+    )
+
+    if response.code == 200
+
+    end
+  end
+end
