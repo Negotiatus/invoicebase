@@ -8,7 +8,9 @@ class RequestService
     )
 
     if response.code == 200
-
+      response.body["orders"].each do |record|
+        InternalRecordImporterService.import(record: record)
+      end
     end
   end
 end
