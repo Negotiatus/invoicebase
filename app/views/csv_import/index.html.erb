@@ -1,7 +1,29 @@
-<%= form_tag csv_import_index_path, method: :post, multipart: true do %>
-  Import a new Invoice CSV
-  <%= label_tag "Select a vendor" %>
-  <%= select_tag :vendor, options_for_select(["WB Mason"], "WB Mason") %>
-  <%= file_field_tag :file, accept: 'text/csv' %>
-  <%= submit_tag "Upload CSV" %>
-<% end %>
+<div class="section">
+  <div class="card section">
+    Import a new invoice CSV
+    <%= form_tag csv_import_index_path, method: :post, multipart: true do %>
+      <div class="field">
+        <%= label_tag :vendor, "Select a vendor", class: "label" %>
+        <div class="control">
+          <%= select_tag :vendor, options_for_select(["WB Mason"], "WB Mason"), class: "select" %>
+        </div>
+      </div>
+      <div class="file field">
+        <label class="file-label">
+          <%= file_field_tag :file, accept: 'text/csv', class: "file-input" %>
+          <span class="file-cta">
+            <span class="file-icon">
+              <i class="fa fa-upload"></i>
+            </span>
+            <span class="file-label">
+              Choose a file…
+            </span>
+          </span>
+        </label>
+      </div>
+      <div class="field">
+        <%= submit_tag "Upload CSV", class: "button" %>
+      </div>
+    <% end %>
+  </div>
+</div>
