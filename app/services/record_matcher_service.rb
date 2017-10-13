@@ -9,8 +9,10 @@ class RecordMatcherService
 
     if exact_match
       if external_record.reconciliation_id.nil?
-        # guess with float of 1
-        external_record.update(reconciliation_id: exact_match.id)
+        external_record.guess.create(
+          internal_record: exact_match,
+          confidence: 1.0
+        )
       end
     else
       make_guesses(external_record: external_record)
@@ -21,47 +23,49 @@ class RecordMatcherService
     private
 
       def self.find_exact_match(external_record:)
-        # plus zip
         InternalRecord.where(
-          reference_number:            external_record.negotiatus_reference_number,
-          negotiatus_reference_number: external_record.refernce_number,
-          amount_cents:                external_record.amount_cents
+          negotiatus_reference_number: external_record.negotiatus_reference_number,
+          reference_number:            external_record.reference_number,
+          amount_cents:                external_record.amount_cents,
+          delivery_address_zipcode:    external_record.delivery_address_zipcode
         ).first
       end
 
       def self.make_guesses(external_record:)
-        # 90% 3 and 90% match
-        # or match external
-        # must match external or no match possible
-        guess_same_reference_numbers(external_record: external_record)
-        guess_similar_amounts_and_zip(external_record: external_record)
+        # matches reference_number, negotiatus_reference_number & delivery_address_zipcode withing 90% of amount_cents
+        guess_ninety_percent_matches(external_record: external_record)
+        # matches reference_number
+        guess_reference_number(external_record: external_record)
       end
 
-      def self.guess_same_reference_numbers(external_record:)
-        matches = InternalRecord.where(
-          "reference_number = ? OR negotiatus_reference_number = ?",
-          external_record.negotiatus_reference_number,
-          external_record.reference_number
+      def self.guess_ninety_percent_matches(external_record:)
+        amount_range = [external_record.amount_cents * (1 + DISCREPANCY_PERCENTAGE)..external_record.amount_cents]
+
+        matches = InternalRecord
+          .where(
+          negotiatus_reference_number: external_record.negotiatus_reference_number,
+          reference_number:            external_record.reference_number,
+          delivery_address_zipcode:    external_record.delivery_address_zipcode
         )
+          .where(amount_cents: amount_range)
 
         matches.each do |match|
           Guess.find_or_create_by(
             external_record: external_record,
-            internal_record: match
+            internal_record: match,
+            confidence:      0.9
           )
         end
       end
 
-      def guess_similar_amounts_and_zip(external_record:)
-        amount_range = [external_record.amount_cents * (1 + DISCREPANCY_PERCENTAGE)..external_record.amount_cents]
-        matches = InternalRecord.where(delivery_address_zipcode: external_record.delivery_address_zipcode)
-                                .where(amount_cents: amount_range)
+      def guess_reference_number(external_record:)
+        matches = InternalRecord.where(reference_number: external_record.reference_number)
 
         matches.each do |match|
-          Guess.find_or_create_by(
+          Guess.find_or_initialize_by(
             external_record: external_record,
             internal_record: match
-          )
+          ).update(confidence: 0.5)
         end
       end
   end
