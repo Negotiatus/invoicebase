@@ -7,8 +7,10 @@ Rails.application.routes.draw do
     get 'sign_out', :to => 'devise/sessions#destroy', :as => :destroy_user_session
   end
 
-  authenticate :user do
-  end
+  resources :csv_import, only: [:index, :create]
+
+  # authenticate :user do
+  # end
 
   root 'static#home'
 end

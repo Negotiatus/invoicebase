@@ -1,13 +1,13 @@
 <nav class="navbar ">
   <div class="navbar-brand">
-    <%= link_to "/", class: "navbar-item" do %>
+    <%= link_to root_path, class: "navbar-item" do %>
       home
     <% end %>
   </div>
 
   <div class="navbar-menu">
     <div class="navbar-start">
-      <%= link_to "Nothing", nil , class: "navbar-item" %>
+      <%= link_to "Upload CSV", csv_import_index_path, class: "navbar-item" %>
       <div class="navbar-item has-dropdown is-hoverable">
         <a href="#" class="navbar-link">More nothing</a>
         <div class="navbar-dropdown">
