@@ -9,6 +9,7 @@ services:
         INSTALL_GROUPS: development
     networks:
       - invoicebase
+      - negotiatus_negotiatus
     volumes:
       - invoicebase_files:/invoicebase:nocopy
     ports:
@@ -23,6 +24,8 @@ services:
 
 networks:
   invoicebase:
+  negotiatus_negotiatus:
+    external: true
 volumes:
   db-data:
   invoicebase_files:
