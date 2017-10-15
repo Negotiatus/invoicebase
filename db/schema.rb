@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171013204125) do
+ActiveRecord::Schema.define(version: 20171015165451) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -28,6 +28,7 @@ ActiveRecord::Schema.define(version: 20171013204125) do
     t.boolean "payable"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "vendor_name"
     t.index ["date"], name: "index_external_records_on_date"
     t.index ["paid_at", "payable"], name: "index_external_records_on_paid_at_and_payable"
   end
@@ -43,7 +44,7 @@ ActiveRecord::Schema.define(version: 20171013204125) do
   end
 
   create_table "internal_records", force: :cascade do |t|
-    t.string "reference_number"
+    t.string "external_reference_number"
     t.string "negotiatus_reference_number"
     t.date "date"
     t.integer "amount_cents"
@@ -51,6 +52,7 @@ ActiveRecord::Schema.define(version: 20171013204125) do
     t.string "delivery_address_zipcode"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "vendor_name"
   end
 
   create_table "users", force: :cascade do |t|
