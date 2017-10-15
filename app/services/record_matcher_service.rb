@@ -5,68 +5,68 @@ class RecordMatcherService
   def self.match(external_record_id:)
     external_record = ExternalRecord.find(external_record_id)
 
-    exact_match = find_exact_match(external_record: external_record)
+    guess(external_record: external_record)
+  end
 
-    if exact_match
-      if external_record.reconciliation_id.nil?
-        external_record.guess.create(
-          internal_record: exact_match,
-          confidence: 1.0
-        )
+  private
+    def self.guess(external_record:)
+      matchers = {
+        1.0 => :exact_match,
+        0.9 => :match_reference_numbers_and_zip_within_dpc_of_amount,
+        0.8 => :match_external_reference_number_within_dpc_of_amount,
+        0.5 => :match_external_reference_number
+      }
+
+      matchers.keys.sort_by{|conf| -conf}.each do |confidence|
+        matches = send(matchers[confidence], external_record: external_record)
+
+        if matches.compact.present?
+          matches.each do |internal_record|
+            external_record.guesses.create(
+              internal_record: internal_record,
+              confidence: confidence
+            )
+          end
+
+          break
+        end
       end
-    else
-      make_guesses(external_record: external_record)
     end
-  end
 
-  class << self
-    private
+    def self.exact_match(external_record:)
+      attempted_match = InternalRecord.where(
+        vendor_name:                 external_record.vendor_name,
+        negotiatus_reference_number: external_record.negotiatus_reference_number,
+        external_reference_number:   external_record.reference_number,
+        amount_cents:                external_record.amount_cents,
+        delivery_address_zipcode:    external_record.delivery_address_zipcode
+      ).first
 
-      def self.find_exact_match(external_record:)
-        InternalRecord.where(
-          negotiatus_reference_number: external_record.negotiatus_reference_number,
-          reference_number:            external_record.reference_number,
-          amount_cents:                external_record.amount_cents,
-          delivery_address_zipcode:    external_record.delivery_address_zipcode
-        ).first
-      end
+      [attempted_match]
+    end
 
-      def self.make_guesses(external_record:)
-        # matches reference_number, negotiatus_reference_number & delivery_address_zipcode withing 90% of amount_cents
-        guess_ninety_percent_matches(external_record: external_record)
-        # matches reference_number
-        guess_reference_number(external_record: external_record)
-      end
+    def self.match_reference_numbers_and_zip_within_dpc_of_amount(external_record:)
+      query = InternalRecord.where(
+        negotiatus_reference_number: external_record.negotiatus_reference_number,
+        external_reference_number:   external_record.reference_number,
+        delivery_address_zipcode:    external_record.delivery_address_zipcode,
+      )
 
-      def self.guess_ninety_percent_matches(external_record:)
-        amount_range = [external_record.amount_cents * (1 + DISCREPANCY_PERCENTAGE)..external_record.amount_cents]
+      query_for_match_within_dpc_of_amount(current_query: query, external_record: external_record)
+    end
 
-        matches = InternalRecord
-          .where(
-          negotiatus_reference_number: external_record.negotiatus_reference_number,
-          reference_number:            external_record.reference_number,
-          delivery_address_zipcode:    external_record.delivery_address_zipcode
-        )
-          .where(amount_cents: amount_range)
+    def self.match_external_reference_number_within_dpc_of_amount(external_record:)
+      query_for_match_within_dpc_of_amount(
+        current_query: match_external_reference_number(external_record: external_record),
+        external_record: external_record
+      )
+    end
 
-        matches.each do |match|
-          Guess.find_or_create_by(
-            external_record: external_record,
-            internal_record: match,
-            confidence:      0.9
-          )
-        end
-      end
+    def self.match_external_reference_number(external_record:)
+      InternalRecord.where(external_reference_number: external_record.reference_number)
+    end
 
-      def guess_reference_number(external_record:)
-        matches = InternalRecord.where(reference_number: external_record.reference_number)
-
-        matches.each do |match|
-          Guess.find_or_initialize_by(
-            external_record: external_record,
-            internal_record: match
-          ).update(confidence: 0.5)
-        end
-      end
-  end
+    def self.query_for_match_within_dpc_of_amount(current_query:, external_record:)
+      current_query.where("? BETWEEN (amount_cents * ?) AND amount_cents", external_record.amount_cents, 1 - DISCREPANCY_PERCENTAGE)
+    end
 end
