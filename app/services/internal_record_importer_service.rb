@@ -8,7 +8,7 @@ class InternalRecordImporterService
     )
 
     if response.code == 200
-      JSON.parse(response.body)["order_vendors"].each do |record|
+      JSON.parse(response.body).with_indifferent_access["order_vendors"].each do |record|
         import(record: record)
       end
     end
@@ -16,7 +16,7 @@ class InternalRecordImporterService
 
   def self.import(record:)
     records = []
-    
+
     record[:vendor_order_number].each do |vendor_order_number|
       records << InternalRecord.create(
         reference_number:            vendor_order_number,
