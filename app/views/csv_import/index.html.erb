@@ -8,7 +8,7 @@
           <%= select_tag :vendor, options_for_select(["WB Mason"], "WB Mason"), class: "select" %>
         </div>
       </div>
-      <div class="file field">
+      <div class="file field is_primary">
         <label class="file-label">
           <%= file_field_tag :file, accept: 'text/csv', class: "file-input" %>
           <span class="file-cta">
@@ -19,6 +19,9 @@
               Choose a file…
             </span>
           </span>
+          <span class="file-name">
+            No file chosen
+          </span>
         </label>
       </div>
       <div class="field">
@@ -27,3 +30,12 @@
     <% end %>
   </div>
 </div>
+
+<script>
+$(function() {
+  $("#file").change(function() {
+    var file = $("#file")[0].files[0];
+    $(".file-name").html(file ? file.name : "No file chosen");
+  });
+});
+</script>

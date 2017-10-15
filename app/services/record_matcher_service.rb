@@ -1,5 +1,4 @@
 class RecordMatcherService
-  DISCREPANCY_DAYS       = 15
   DISCREPANCY_PERCENTAGE = 0.10
 
   def self.match(external_record_id:)
