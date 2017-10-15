@@ -1,5 +1,6 @@
 module Vendors
-  class WBMasonCsvImporter
+  class WBMasonCsvImportService
+    VENDOR_NAME = "WB Mason"
     HEADERS = {
       invoice_number:              "INVOICE",
       reference_number:            "SALES ORDER",
@@ -22,7 +23,7 @@ module Vendors
         existing_record = ExternalRecord.find_by(reference_number: values[:reference_number], negotiatus_reference_number: values[:negotiatus_reference_number])
 
         if !existing_record
-          ExternalRecord.create(values)
+          ExternalRecord.create(values.merge(vendor_name: VENDOR_NAME))
         elsif existing_record.amount_cents != values[:amount_cents]
           errors << "#{values[:reference_number]}:#{values[:negotiatus_reference_number]} - existing: #{existing_record.amount_cents / 100.0} new: #{values[:amount_cents] / 100.0}"
         end
